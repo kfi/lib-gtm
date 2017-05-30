@@ -18,7 +18,7 @@ class GoogleTagManagerTest extends \PHPUnit_Framework_TestCase
 })(window,document,'script','dataLayer','{$id}');</script>
 EOF;
 
-		$this->assertSame($expectedResult, GoogleTagManager::getInstance()->getTag(new Id($id)));
+		$this->assertSame($expectedResult, GoogleTagManager::getInstance()->renderTag(new Id($id)));
 	}
 
 	public function testGetNoScriptTag()
@@ -29,7 +29,7 @@ EOF;
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={$id}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 EOF;
 
-		$this->assertSame($expectedResult, GoogleTagManager::getInstance()->getNoScriptTag(new Id($id)));
+		$this->assertSame($expectedResult, GoogleTagManager::getInstance()->renderNoScriptTag(new Id($id)));
 	}
 
 	public function testGetDataLayer()
@@ -45,7 +45,7 @@ EOF;
 
 		$result = GoogleTagManager::getInstance()
 			->addDataLayerVariable($varName, $varValue)
-			->getDataLayer();
+			->renderDataLayer();
 
 		$this->assertSame($expectedResult, $result);
 	}

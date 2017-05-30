@@ -33,17 +33,17 @@ class GoogleTagManager
 		return self::$instance;
 	}
 
-	public function getTag(Id $id)
+	public function renderTag(Id $id)
 	{
 		return $this->mustache->render('tag', ['id' => $id]);
 	}
 
-	public function getNoScriptTag(Id $id)
+	public function renderNoScriptTag(Id $id)
 	{
 		return $this->mustache->render('tag.noscript', ['id' => $id]);
 	}
 
-	public function getDataLayer()
+	public function renderDataLayer()
 	{
 		return $this->mustache->render('tag.dataLayer', ['data' => json_encode($this->dataLayer)]);
 	}
