@@ -33,7 +33,7 @@ class GoogleTagManager
 
 	public function renderTag(Id $id)
 	{
-		return $this->mustache->render('tag', ['id' => $id, 'dataLayerJson' => json_encode($this->getDataLayerVariables())]);
+		return $this->mustache->render('tag', ['id' => $id, 'dataLayerJson' => json_encode($this->getDataLayerVariables(), JSON_PRETTY_PRINT)]);
 	}
 
 	public function renderNoScriptTag(Id $id)
