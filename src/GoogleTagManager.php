@@ -11,6 +11,7 @@ class GoogleTagManager
 {
 	private static $instance;
 	private $mustache;
+
 	private $dataLayer = [];
 
 	public function __construct()
