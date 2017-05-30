@@ -33,17 +33,20 @@ class GoogleTagManager
 
 	public function renderTag(Id $id)
 	{
-		return $this->mustache->render('tag', ['id' => $id]);
+		return $this->mustache->render('tag', ['id' => $id, 'dataLayerJson' => json_encode($this->getDataLayerVariables())]);
 	}
 
 	public function renderNoScriptTag(Id $id)
 	{
-		return $this->mustache->render('tag.noscript', ['id' => $id]);
+		$queryParams = ['id' => (string)$id];
+		$queryParams += $this->getDataLayerVariables();
+
+		return $this->mustache->render('tag.noscript', ['query' => http_build_query($queryParams)]);
 	}
 
-	public function renderDataLayer()
+	public function getDataLayerVariables()
 	{
-		return $this->mustache->render('tag.dataLayer', ['data' => json_encode($this->dataLayer)]);
+		return $this->dataLayer;
 	}
 
 	public function addDataLayerVariable($name, $value)
