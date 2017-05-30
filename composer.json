@@ -1,5 +1,5 @@
 {
-    "name": "inkl/gtm-lib",
+    "name": "inkl/lib-gtm",
     "require": {
         "mustache/mustache": "^2.11"
     },
