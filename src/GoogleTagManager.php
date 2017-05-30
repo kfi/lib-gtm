@@ -12,8 +12,8 @@ class GoogleTagManager
 	private static $instance;
 	private $mustache;
 
-	/**
-	 */
+	private $dataLayer = [];
+
 	public function __construct()
 	{
 		$this->mustache = new Mustache_Engine([
@@ -43,7 +43,28 @@ class GoogleTagManager
 
 	public function getDataLayer()
 	{
-		return DataLayer::getInstance();
+		return $this->mustache->render('tag.dataLayer', ['data' => json_encode($this->dataLayer)]);
+	}
+
+	public function addDataLayerVariable($name, $value)
+	{
+		$this->dataLayer[$name] = $value;
+
+		return $this;
+	}
+
+	public function removeDataLayerVariable($name)
+	{
+		unset($this->dataLayer[$name]);
+
+		return $this;
+	}
+
+	public function clearDataLayerVariables()
+	{
+		$this->dataLayer = [];
+
+		return $this;
 	}
 
 }

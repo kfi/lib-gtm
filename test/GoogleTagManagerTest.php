@@ -31,4 +31,22 @@ EOF;
 
 		$this->assertSame($expectedResult, GoogleTagManager::getInstance()->getNoScriptTag(new Id($id)));
 	}
+
+	public function testGetDataLayer()
+	{
+		$varName = 'testvar';
+		$varValue = 'testvalue';
+
+		$expectedResult = <<<EOF
+<script>
+	var dataLayer = [{"{$varName}":"{$varValue}"}];
+</script>
+EOF;
+
+		$result = GoogleTagManager::getInstance()
+			->addDataLayerVariable($varName, $varValue)
+			->getDataLayer();
+
+		$this->assertSame($expectedResult, $result);
+	}
 }
