@@ -6,7 +6,7 @@ use Inkl\GoogleTagManager\Schema\Id;
 
 class GoogleTagManagerTest extends \PHPUnit_Framework_TestCase
 {
-	public function testGetTag()
+	public function testRenderTag()
 	{
 		$id = 123;
 
@@ -21,7 +21,7 @@ EOF;
 		$this->assertSame($expectedResult, GoogleTagManager::getInstance()->renderTag(new Id($id)));
 	}
 
-	public function testGetNoScriptTag()
+	public function testRenderNoScriptTag()
 	{
 		$id = 123;
 
@@ -32,7 +32,7 @@ EOF;
 		$this->assertSame($expectedResult, GoogleTagManager::getInstance()->renderNoScriptTag(new Id($id)));
 	}
 
-	public function testGetDataLayer()
+	public function testRenderDataLayer()
 	{
 		$varName = 'testvar';
 		$varValue = 'testvalue';
