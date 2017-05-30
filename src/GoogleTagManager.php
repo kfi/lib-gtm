@@ -10,6 +10,8 @@ use Mustache_Loader_FilesystemLoader;
 class GoogleTagManager
 {
 	private static $instance;
+
+	/** @var Mustache_Engine */
 	private $mustache;
 
 	private $dataLayer = [];
