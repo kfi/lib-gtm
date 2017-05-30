@@ -1,0 +1,12 @@
+{
+	"name": "local",
+	"version": "1.0.0",
+	"description": "",
+	"repository": {},
+	"author": "",
+	"license": "",
+	"scripts": {
+		"---------- [  BUILD  ] ----------": "",
+		"update:satis": "plink -t root@inklammern.de \"./update-satis\""
+	}
+}
