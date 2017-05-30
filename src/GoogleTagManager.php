@@ -11,6 +11,7 @@ class GoogleTagManager
 {
 	private static $instance;
 
+	/** @var Mustache_Engine */
 	private $mustache;
 
 	private $dataLayer = [];
