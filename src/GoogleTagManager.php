@@ -13,6 +13,7 @@ class GoogleTagManager
 	private $mustache;
 
 	private $dataLayer = [];
+	private $scripts = [];
 
 	public function __construct()
 	{
@@ -31,31 +32,101 @@ class GoogleTagManager
 		return self::$instance;
 	}
 
+	/**
+	 * Render tag
+	 *
+	 * @param Id $id
+	 * @return string
+	 */
 	public function renderTag(Id $id)
 	{
-		return $this->mustache->render('tag', ['id' => $id, 'dataLayerJson' => json_encode($this->getDataLayerVariables(), JSON_PRETTY_PRINT)]);
+		$dataLayer = [];
+		foreach ($this->getDataLayerVariables() as $dataLayerVariable)
+		{
+			$dataLayer[] = $dataLayerVariable;
+		}
+
+		return $this->mustache->render('tag', [
+			'id' => $id,
+			'customScripts' => implode(PHP_EOL, $this->getCustomScripts()),
+			'dataLayerJson' => json_encode($dataLayer, JSON_PRETTY_PRINT)
+		]);
 	}
 
-	public function renderNoScriptTag(Id $id)
+	/**
+	 * Add js script which is placed after datalayer and before tag
+	 * $name is only used as internal identifier
+	 *
+	 * @param string $script
+	 * @param string $name
+	 * @return $this
+	 */
+	public function addCustomScript($script, $name = null)
 	{
-		$queryParams = ['id' => (string)$id];
-		$queryParams += $this->getDataLayerVariables();
-
-		return $this->mustache->render('tag.noscript', ['query' => http_build_query($queryParams)]);
-	}
-
-	public function getDataLayerVariables()
-	{
-		return $this->dataLayer;
-	}
-
-	public function addDataLayerVariable($name, $value)
-	{
-		$this->dataLayer[$name] = $value;
+		if ($name)
+		{
+			$this->scripts[$name] = $script;
+		} else
+		{
+			$this->scripts[] = $script;
+		}
 
 		return $this;
 	}
 
+	/**
+	 * Remove script by name
+	 *
+	 * @param string $name
+	 * @return $this
+	 */
+	public function removeCustomScript($name)
+	{
+		unset($this->scripts[$name]);
+
+		return $this;
+	}
+
+	/**
+	 * Retrieve all scripts
+	 *
+	 * @return array
+	 */
+	public function getCustomScripts()
+	{
+		return $this->scripts;
+	}
+
+	/**
+	 * Remove all scripts
+	 */
+	public function clearCustomScripts()
+	{
+		$this->scripts = [];
+
+		return $this;
+	}
+
+	/**
+	 * Add datalayer variable
+	 *
+	 * @param string $name
+	 * @param mixed $value
+	 * @return $this
+	 */
+	public function addDataLayerVariable($name, $value)
+	{
+		$this->dataLayer[$name] = [$name => $value];
+
+		return $this;
+	}
+
+	/**
+	 * Remove datalayer variable by name
+	 *
+	 * @param string $name
+	 * @return $this
+	 */
 	public function removeDataLayerVariable($name)
 	{
 		unset($this->dataLayer[$name]);
@@ -63,6 +134,21 @@ class GoogleTagManager
 		return $this;
 	}
 
+	/**
+	 * Retrieve all datalayer variables
+	 *
+	 * @return array
+	 */
+	public function getDataLayerVariables()
+	{
+		return $this->dataLayer;
+	}
+
+	/**
+	 * Remove all datalayer variables
+	 *
+	 * @return $this
+	 */
 	public function clearDataLayerVariables()
 	{
 		$this->dataLayer = [];
