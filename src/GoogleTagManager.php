@@ -55,17 +55,17 @@ class GoogleTagManager
 
 	/**
 	 * Add js script which is placed after datalayer and before tag
-	 * $name is only used as internal identifier
+	 * $index is only used as internal identifier
 	 *
 	 * @param string $script
-	 * @param string $name
+	 * @param string $index
 	 * @return $this
 	 */
-	public function addCustomScript($script, $name = null)
+	public function addCustomScript($script, $index = null)
 	{
-		if ($name)
+		if ($index)
 		{
-			$this->scripts[$name] = $script;
+			$this->scripts[$index] = $script;
 		} else
 		{
 			$this->scripts[] = $script;
@@ -75,14 +75,14 @@ class GoogleTagManager
 	}
 
 	/**
-	 * Remove script by name
+	 * Remove script by index
 	 *
-	 * @param string $name
+	 * @param string $index
 	 * @return $this
 	 */
-	public function removeCustomScript($name)
+	public function removeCustomScript($index)
 	{
-		unset($this->scripts[$name]);
+		unset($this->scripts[$index]);
 
 		return $this;
 	}
@@ -109,27 +109,34 @@ class GoogleTagManager
 
 	/**
 	 * Add datalayer variable
+	 * $index is only used as internal identifier
 	 *
 	 * @param string $name
 	 * @param mixed $value
+	 * @param string $index
 	 * @return $this
 	 */
-	public function addDataLayerVariable($name, $value)
+	public function addDataLayerVariable($name, $value, $index = null)
 	{
-		$this->dataLayer[$name] = [$name => $value];
+		if ($index)
+		{
+			$this->dataLayer[$index] = [$name => $value];
+		} else {
+			$this->dataLayer[] = [$name => $value];
+		}
 
 		return $this;
 	}
 
 	/**
-	 * Remove datalayer variable by name
+	 * Remove datalayer variable by index
 	 *
-	 * @param string $name
+	 * @param string $index
 	 * @return $this
 	 */
-	public function removeDataLayerVariable($name)
+	public function removeDataLayerVariable($index)
 	{
-		unset($this->dataLayer[$name]);
+		unset($this->dataLayer[$index]);
 
 		return $this;
 	}
