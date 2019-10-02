@@ -29,7 +29,8 @@ class GoogleTagManagerTest extends \PHPUnit_Framework_TestCase
 
 		$expectedResult = <<<EOF
 <script>
-var dataLayer = [];
+var dataLayer = window.dataLayer = window.dataLayer || [];
+false && dataLayer.push([]);
 </script>
 
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -56,14 +57,11 @@ EOF;
 
 		$expectedResult = <<<EOF
 <script>
-var dataLayer = [
-    {
-        "{$dataLayerVariableName}": "{$dataLayerVariableValue}"
-    },
-    {
-        "{$dataLayerVariableEventName}": "{$dataLayerVariableEventValue}"
-    }
-];
+var dataLayer = window.dataLayer = window.dataLayer || [];
+true && dataLayer.push({
+    "{$dataLayerVariableName}": "{$dataLayerVariableValue}",
+    "{$dataLayerVariableEventName}": "{$dataLayerVariableEventValue}"
+});
 </script>
 {$customScript}
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':

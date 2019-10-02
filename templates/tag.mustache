@@ -1,5 +1,6 @@
 <script>
-var dataLayer = {{{dataLayerJson}}};
+var dataLayer = window.dataLayer = window.dataLayer || [];
+{{{dataLayerHasData}}} && dataLayer.push({{{dataLayerJson}}});
 </script>
 {{&customScripts}}
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':

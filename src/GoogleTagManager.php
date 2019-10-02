@@ -40,16 +40,11 @@ class GoogleTagManager
 	 */
 	public function renderTag(Id $id)
 	{
-		$dataLayer = [];
-		foreach ($this->getDataLayerVariables() as $dataLayerVariable)
-		{
-			$dataLayer[] = $dataLayerVariable;
-		}
-
 		return $this->mustache->render('tag', [
 			'id' => $id,
 			'customScripts' => implode(PHP_EOL, $this->getCustomScripts()),
-			'dataLayerJson' => json_encode($dataLayer, JSON_PRETTY_PRINT)
+			'dataLayerJson' => json_encode($this->getDataLayerVariables(), JSON_PRETTY_PRINT),
+			'dataLayerHasData' => json_encode(!empty($this->getDataLayerVariables())),
 		]);
 	}
 
@@ -109,34 +104,27 @@ class GoogleTagManager
 
 	/**
 	 * Add datalayer variable
-	 * $index is only used as internal identifier
 	 *
 	 * @param string $name
 	 * @param mixed $value
-	 * @param string $index
 	 * @return $this
 	 */
-	public function addDataLayerVariable($name, $value, $index = null)
+	public function addDataLayerVariable($name, $value)
 	{
-		if ($index)
-		{
-			$this->dataLayer[$index] = [$name => $value];
-		} else {
-			$this->dataLayer[] = [$name => $value];
-		}
+		$this->dataLayer[$name] = $value;
 
 		return $this;
 	}
 
 	/**
-	 * Remove datalayer variable by index
+	 * Remove datalayer variable by name
 	 *
-	 * @param string $index
+	 * @param string $name
 	 * @return $this
 	 */
-	public function removeDataLayerVariable($index)
+	public function removeDataLayerVariable($name)
 	{
-		unset($this->dataLayer[$index]);
+		unset($this->dataLayer[$name]);
 
 		return $this;
 	}
